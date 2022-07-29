@@ -79,5 +79,4 @@
             android:layout_marginLeft="5px"
             android:text="@string/show" />
     </LinearLayout>
-
 </LinearLayout>
