@@ -41,11 +41,8 @@ public class EditActivity extends AppCompatActivity {
                         dbh.deleteNote(data.getId());
                         finish();
                     }
-
                 });
-
             }
-
         });
     }
 }
