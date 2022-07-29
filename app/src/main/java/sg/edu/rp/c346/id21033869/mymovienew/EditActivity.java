@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class EditActivity extends AppCompatActivity {
 
     TextView tvID;
-    EditText etContent;
+    EditText etGenre;
+    EditText etYear;
+    EditText etTitle;
+    Spinner rating;
     Button btnUpdate, btnDelete;
     Movie data;
 
@@ -21,8 +25,11 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        tvID = findViewById(R.id.tvID);
-        etContent = findViewById(R.id.tvEditContent);
+        tvID = findViewById(R.id.editTextID);
+        etGenre = findViewById(R.id.editTextGenre);
+        etTitle = findViewById(R.id.editTextTitle);
+        etYear = findViewById(R.id.editTextYear);
+        rating = findViewById(R.id.spinnerRate);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnDelete = findViewById(R.id.btnDelete);
 
@@ -30,8 +37,11 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DBHelper dbh = new DBHelper(EditActivity.this);
-                data.setNoteContent(etContent.getText().toString());
-                dbh.updateNote(data);
+                data.setMovieContent(etGenre.getText().toString());
+                data.setMovieContent(etTitle.getText().toString());
+                data.setMovieContent(etYear.getText().toString());
+
+                dbh.updateMovie(data);
                 dbh.close();
 
                 btnDelete.setOnClickListener(new View.OnClickListener() {
