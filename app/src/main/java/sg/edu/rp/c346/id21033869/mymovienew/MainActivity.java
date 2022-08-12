@@ -52,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int id = movieList.size() + 1;
-                String title = tvTitle.getText().toString();
-                String genre = tvGenre.getText().toString();
-                String strYear = tvYear.getText().toString();
+                String title = etTitle.getText().toString();
+                String genre = etGenre.getText().toString();
+                String strYear = etYear.getText().toString();
                 String actualRating = "";
-                int year = parseInt(strYear);
+                int year = Integer.parseInt(strYear);
 
                 if (spRating.equals("G")) {
                     actualRating = "G";
