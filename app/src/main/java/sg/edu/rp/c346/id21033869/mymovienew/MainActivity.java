@@ -1,7 +1,12 @@
 package sg.edu.rp.c346.id21033869.mymovienew;
 
+import static java.lang.Integer.parseInt;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,5 +45,52 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Rating_List, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        ArrayList<Movies> movieList = new ArrayList<>();
+
+        //@Override
+        btnInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = movieList.size() + 1;
+                String title = tvTitle.getText().toString();
+                String genre = tvGenre.getText().toString();
+                String strYear = tvYear.getText().toString();
+                String actualRating = "";
+                int year = parseInt(strYear);
+
+                if (spRating.equals("G")) {
+                    actualRating = "G";
+                } else if (spRating.equals("PG")) {
+                    actualRating = "PG";
+                } else if (spRating.equals("PG13")) {
+                    actualRating = "PG13";
+                } else if (spRating.equals("NC16")) {
+                    actualRating = "NC16";
+                } else if (spRating.equals("M18")) {
+                    actualRating = "M18";
+                } else {
+                    actualRating = "R21";
+                }
+
+                int preSize = movieList.size();
+
+                movieList.add(new Movies(id, title, genre, year, actualRating));
+
+                if (movieList.size() == preSize) {
+                    System.out.println("Movie not added");
+                } else {
+                    System.out.println("Movie added");
+                }
+            }
+        });
+
+        //@Override
+        btnShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,ShowMovies.class);
+                startActivity(i);
+            }
+        });
     }
 }
