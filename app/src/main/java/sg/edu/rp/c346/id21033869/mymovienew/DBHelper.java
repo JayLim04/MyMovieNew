@@ -1,3 +1,4 @@
+
 package sg.edu.rp.c346.id21033869.mymovienew;
 
 import android.content.ContentValues;
@@ -19,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_YEAR = "year";
     private static final String COLUMN_RATING = "rating";
 
-    public DBHelper(Context context){
+    public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -34,7 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createMovieTableSql);
         Log.i("info", "created tables");
 
-        for (int i = 0; i< 4; i++) {
+        for (int i = 0; i < 4; i++) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_MOVIE_TITLE, "Data number " + i);
             db.insert(TABLE_MOVIES, null, values);
@@ -49,20 +50,20 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("ALTER TABLE " + TABLE_MOVIES + " ADD COLUMN title TEXT ");
     }
 
-    public long insertSong(String title, String singers, int  year, int stars) {
+    public long insertSong(String title, String singers, int year, int stars) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_MOVIE_TITLE, title);
         values.put(COLUMN_GENRE, singers);
-        values.put(COLUMN_YEAR,  year);
-        values.put(COLUMN_RATING,stars);
+        values.put(COLUMN_YEAR, year);
+        values.put(COLUMN_RATING, stars);
         long result = db.insert(TABLE_MOVIES, null, values);
         db.close();
-        Log.d("SQL Insert","ID:"+ result); //id returned, shouldn’t be -1
+        Log.d("SQL Insert", "ID:" + result); //id returned, should not be -1
         return result;
     }
 
-    public ArrayList<Movies> getAllMovies(){
+    public ArrayList<Movies> getAllMovies() {
         ArrayList<Movies> movies = new ArrayList<Movies>();
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -86,7 +87,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return movies;
     }
 
-    public int updateMovies(Movies data){
+    public int updateMovies(Movies data) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_MOVIE_TITLE, data.getTitle());
@@ -100,7 +101,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public int deleteMovies(int id){
+
+    public int deleteMovies(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String condition = COLUMN_ID + "= ?";
         String[] args = {String.valueOf(id)};
@@ -113,15 +115,38 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Movies> movies = new ArrayList<Movies>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns= {COLUMN_ID, COLUMN_MOVIE_TITLE, COLUMN_GENRE, COLUMN_YEAR, COLUMN_RATING};
+        String[] columns = {COLUMN_ID, COLUMN_MOVIE_TITLE, COLUMN_GENRE, COLUMN_YEAR, COLUMN_RATING};
         String condition = COLUMN_RATING + " Like ?";
-        String[] args = { "%" +  keyword + "%"};
+        String[] args = {"%" + keyword + "%"};
         Cursor cursor = db.query(TABLE_MOVIES, columns, condition, args,
                 null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String singers = cursor.getString(2);
+                int year = cursor.getInt(3);
+                String rating = cursor.getString(4);
+                Movies movie = new Movies(id, title, singers, year, rating);
+                movies.add(movie);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return movies;
+    }
+    public ArrayList<Movies> getPg13Movies(){
+        ArrayList<Movies> movies = new ArrayList<Movies>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COLUMN_ID, COLUMN_MOVIE_TITLE, COLUMN_GENRE, COLUMN_YEAR, COLUMN_RATING};
+        String condition = COLUMN_RATING + " Like ?";
+        String[] args = {"PG13"};
+        Cursor cursor = db.query(TABLE_MOVIES, columns, condition, args, null, null, null, null);
+
+        if(cursor.moveToFirst()){
+            do {int id = cursor.getInt(0);
                 String title = cursor.getString(1);
                 String singers = cursor.getString(2);
                 int year = cursor.getInt(3);
