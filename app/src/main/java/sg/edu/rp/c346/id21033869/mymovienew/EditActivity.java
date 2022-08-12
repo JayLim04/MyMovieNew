@@ -17,8 +17,8 @@ public class EditActivity extends AppCompatActivity {
     EditText etYear;
     EditText etTitle;
     Spinner rating;
-    Button btnUpdate, btnDelete;
-    Movie data;
+    Button btnUpdate, btnDelete, btnCancel;
+    Movies data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,26 +32,35 @@ public class EditActivity extends AppCompatActivity {
         rating = findViewById(R.id.spinnerRate);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnDelete = findViewById(R.id.btnDelete);
+        btnCancel = findViewById(R.id.btnCancel);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DBHelper dbh = new DBHelper(EditActivity.this);
-                data.setMovieContent(etGenre.getText().toString());
-                data.setMovieContent(etTitle.getText().toString());
-                data.setMovieContent(etYear.getText().toString());
+                int year = Integer.parseInt(String.valueOf(etYear.getText()));
 
-                dbh.updateMovie(data);
+                data.setGenre(etGenre.getText().toString());
+                data.setTitle(etTitle.getText().toString());
+                data.setYear(year);
+
+                dbh.updateMovies(data);
                 dbh.close();
 
                 btnDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         DBHelper dbh = new DBHelper(EditActivity.this);
-                        dbh.deleteNote(data.getId());
+                        dbh.deleteMovies(data.getId());
                         finish();
                     }
                 });
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
