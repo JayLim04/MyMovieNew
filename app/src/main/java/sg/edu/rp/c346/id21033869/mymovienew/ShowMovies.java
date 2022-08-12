@@ -1,6 +1,9 @@
 package sg.edu.rp.c346.id21033869.mymovienew;
 
-public class ShowMovies {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class ShowMovies extends AppCompatActivity {
 
     // Ahmad section
+    //test
 }
